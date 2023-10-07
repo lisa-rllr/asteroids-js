@@ -38,10 +38,24 @@ class Player {
 		context.restore();
 	}
 
+	reapear() {
+		if (this.position.x < 0) {
+			this.position.x = canvas.width;
+		} else if (this.position.x > canvas.width) {
+			this.position.x = 0;
+		}
+		if (this.position.y < 0) {
+			this.position.y = canvas.height;
+		} else if (this.position.y > canvas.height) {
+			this.position.y = 0;
+		}
+	}
+
 	update() {
 		this.draw();
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
+		this.reapear();
 	}
 
 	getVertices() {
