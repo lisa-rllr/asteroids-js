@@ -29,7 +29,7 @@ class Player {
 		context.moveTo(this.position.x + 30, this.position.y);
 		context.lineTo(this.position.x - 10, this.position.y - 10);
 		context.lineTo(this.position.x - 10, this.position.y + 10);
-		context.fillStyle = "pink";
+		context.fillStyle = "white";
 		context.fill();
 		context.closePath();
 
