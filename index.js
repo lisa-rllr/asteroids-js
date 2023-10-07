@@ -60,14 +60,23 @@ const keys = {
 	},
 };
 
+const SPEED = 3;
+const ROTATIONAL_SPEED = 0.05;
+const FRICTION = 0.95;
+
 function animate() {
 	window.requestAnimationFrame(animate);
 	cleanCanvas();
 	player.update();
-	player.velocity.x = 0;
-	if (keys.w.pressed) player.velocity.x = 1;
-	if (keys.d.pressed) player.rotation += 0.01;
-	else if (keys.a.pressed) player.rotation -= 0.01;
+	if (keys.w.pressed) {
+		player.velocity.x = Math.cos(player.rotation) * 3;
+		player.velocity.y = Math.sin(player.rotation) * 3;
+	} else if (!keys.w.pressed) {
+		player.velocity.x *= FRICTION;
+		player.velocity.y *= FRICTION;
+	}
+	if (keys.d.pressed) player.rotation += ROTATIONAL_SPEED;
+	else if (keys.a.pressed) player.rotation -= ROTATIONAL_SPEED;
 }
 
 animate();
