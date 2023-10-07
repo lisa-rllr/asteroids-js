@@ -8,30 +8,30 @@ context.fillStyle = "black";
 context.fillRect(0, 0, canvas.width, canvas.height);
 
 class Player {
-  constructor({ position, velocity }) {
-    this.position = position;
-    this.velocity = velocity;
-  }
+	constructor({ position, velocity }) {
+		this.position = position;
+		this.velocity = velocity;
+	}
 
-  draw() {
-    // ** center of the canvas **
-    // context.arc(this.position.x, this.position.y, 5, 0, Math.PI*2, false);
-    // context.fillStyle = "pink";
-    // context.fill();
+	draw() {
+		// ** center of the canvas **
+		// context.arc(this.position.x, this.position.y, 5, 0, Math.PI*2, false);
+		// context.fillStyle = "pink";
+		// context.fill();
 
-    context.moveTo(this.position.x + 30, this.position.y);
-    context.lineTo(this.position.x - 10, this.position.y - 10);
-    context.lineTo(this.position.x - 10, this.position.y + 10);
-    context.closePath();
+		context.moveTo(this.position.x + 30, this.position.y);
+		context.lineTo(this.position.x - 10, this.position.y - 10);
+		context.lineTo(this.position.x - 10, this.position.y + 10);
+		context.closePath();
 
-    context.strokeStyle = "white";
-    context.stroke();
-  }
+		context.strokeStyle = "white";
+		context.stroke();
+	}
 }
 
 const player = new Player({
-  position: { x: canvas.width / 2, y: canvas.height / 2 },
-  velocity: { x: 0, y: 0 },
+	position: { x: canvas.width / 2, y: canvas.height / 2 },
+	velocity: { x: 0, y: 0 },
 });
 
 player.draw();
