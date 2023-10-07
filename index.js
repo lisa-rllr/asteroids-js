@@ -128,7 +128,7 @@ const PROJECTILE_SPEED = 3;
 const projectiles = [];
 const asteroids = [];
 
-window.setInterval(() => {
+setInterval(() => {
 	const index = Math.floor(Math.random() * 4);
 	let radius = 50 * Math.random() + 10;
 	let x, y;
@@ -174,6 +174,20 @@ window.setInterval(() => {
 	);
 }, 3000);
 
+function circleCollide(circle1, circle2) {
+	const xDifference = circle2.position.x - circle1.position.x;
+	const yDifference = circle2.position.y - circle1.position.y;
+
+	const distance = Math.sqrt(
+		xDifference * xDifference + yDifference * yDifference
+	);
+
+	if (distance <= circle1.radius + circle2.radius) {
+		return true;
+	}
+	return false;
+}
+
 function animate() {
 	window.requestAnimationFrame(animate);
 	cleanCanvas();
@@ -195,15 +209,25 @@ function animate() {
 
 	// asteroid managment
 	for (let i = asteroids.length - 1; i >= 0; i--) {
-		const asteroid = asteroids[i];
+		let asteroid = asteroids[i];
 		asteroid.update();
+
+		for (let j = projectiles.length - 1; j >= 0; j--) {
+			let projectile = projectiles[j];
+			if (circleCollide(asteroid, projectile)) {
+				console.log(asteroid, projectile);
+				asteroids.splice(i, 1);
+				projectiles.splice(j, 1);
+			}
+		}
+
 		if (
 			asteroid.position.x + asteroid.radius < 0 ||
 			asteroid.position.x - asteroid.radius > canvas.width ||
 			asteroid.position.y + asteroid.radius < 0 ||
 			asteroid.position.y - asteroid.radius > canvas.height
 		) {
-			projectiles.splice(i, 1);
+			asteroids.splice(i, 1);
 		}
 	}
 
@@ -244,7 +268,6 @@ window.addEventListener("keydown", (event) => {
 					},
 				})
 			);
-			console.log(projectiles);
 			break;
 	}
 });
