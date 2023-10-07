@@ -46,12 +46,19 @@ const keys = {
 	w: {
 		pressed: false,
 	},
+	a: {
+		pressed: false,
+	},
+	d: {
+		pressed: false,
+	},
 };
 
 function animate() {
 	window.requestAnimationFrame(animate);
 	cleanCanvas();
 	player.update();
+	player.velocity.x = 0;
 	if (keys.w.pressed) player.velocity.x = 1;
 }
 
@@ -60,17 +67,27 @@ animate();
 window.addEventListener("keydown", (event) => {
 	switch (event.code) {
 		case "KeyW": // Z azerty
-			console.log("z key was pressed");
 			keys.w.pressed = true;
 			break;
 		case "KeyA": // Q azerty
-			console.log("q key was pressed");
-			break;
-		case "KeyS":
-			console.log("s key was pressed");
+			keys.w.pressed = true;
 			break;
 		case "KeyD":
-			console.log("d key was pressed");
+			keys.w.pressed = true;
+			break;
+	}
+});
+
+window.addEventListener("keyup", (event) => {
+	switch (event.code) {
+		case "KeyW": // Z azerty
+			keys.w.pressed = false;
+			break;
+		case "KeyA": // Q azerty
+			keys.w.pressed = false;
+			break;
+		case "KeyD":
+			keys.w.pressed = false;
 			break;
 	}
 });
