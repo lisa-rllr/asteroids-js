@@ -13,9 +13,14 @@ class Player {
 	constructor({ position, velocity }) {
 		this.position = position;
 		this.velocity = velocity;
+		this.rotation = 0;
 	}
 
 	draw() {
+		context.save();
+		context.translate(this.position.x, this.position.y);
+		context.rotate(this.rotation);
+		context.translate(-this.position.x, -this.position.y);
 		// ** center of the canvas **
 		// context.arc(this.position.x, this.position.y, 5, 0, Math.PI*2, false);
 		// context.fillStyle = "pink";
@@ -28,6 +33,7 @@ class Player {
 
 		context.strokeStyle = "white";
 		context.stroke();
+		context.restore();
 	}
 
 	update() {
@@ -60,6 +66,8 @@ function animate() {
 	player.update();
 	player.velocity.x = 0;
 	if (keys.w.pressed) player.velocity.x = 1;
+	if (keys.d.pressed) player.rotation += 0.01;
+	else if (keys.a.pressed) player.rotation -= 0.01;
 }
 
 animate();
@@ -70,10 +78,10 @@ window.addEventListener("keydown", (event) => {
 			keys.w.pressed = true;
 			break;
 		case "KeyA": // Q azerty
-			keys.w.pressed = true;
+			keys.a.pressed = true;
 			break;
 		case "KeyD":
-			keys.w.pressed = true;
+			keys.d.pressed = true;
 			break;
 	}
 });
@@ -84,10 +92,10 @@ window.addEventListener("keyup", (event) => {
 			keys.w.pressed = false;
 			break;
 		case "KeyA": // Q azerty
-			keys.w.pressed = false;
+			keys.a.pressed = false;
 			break;
 		case "KeyD":
-			keys.w.pressed = false;
+			keys.d.pressed = false;
 			break;
 	}
 });
