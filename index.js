@@ -29,11 +29,42 @@ class Player {
 		context.moveTo(this.position.x + 30, this.position.y);
 		context.lineTo(this.position.x - 10, this.position.y - 10);
 		context.lineTo(this.position.x - 10, this.position.y + 10);
+		context.fillStyle = "pink";
+		context.fill();
 		context.closePath();
 
 		context.strokeStyle = "white";
 		context.stroke();
 		context.restore();
+	}
+
+	update() {
+		this.draw();
+		this.position.x += this.velocity.x;
+		this.position.y += this.velocity.y;
+	}
+}
+
+class Projectile {
+	constructor({ position, velocity }) {
+		this.position = position;
+		this.velocity = velocity;
+		this.radius = 5;
+	}
+
+	draw() {
+		context.beginPath();
+		context.arc(
+			this.position.x,
+			this.position.y,
+			this.radius,
+			0,
+			Math.PI * 2,
+			false
+		);
+		context.closePath();
+		context.fillStyle = "white";
+		context.fill();
 	}
 
 	update() {
@@ -63,11 +94,28 @@ const keys = {
 const SPEED = 3;
 const ROTATIONAL_SPEED = 0.05;
 const FRICTION = 0.95;
+const PROJECTILE_SPEED = 3;
+
+const projectiles = [];
 
 function animate() {
 	window.requestAnimationFrame(animate);
 	cleanCanvas();
 	player.update();
+
+	for (let i = projectiles.length - 1; i >= 0; i--) {
+		const projectile = projectiles[i];
+		projectile.update();
+		if (
+			projectile.position.x + projectile.radius < 0 ||
+			projectile.position.x - projectile.radius > canvas.width ||
+			projectile.position.y + projectile.radius < 0 ||
+			projectile.position.y - projectile.radius > canvas.height
+		) {
+			projectiles.splice(i, 1);
+		}
+	}
+
 	if (keys.w.pressed) {
 		player.velocity.x = Math.cos(player.rotation) * 3;
 		player.velocity.y = Math.sin(player.rotation) * 3;
@@ -91,6 +139,21 @@ window.addEventListener("keydown", (event) => {
 			break;
 		case "KeyD":
 			keys.d.pressed = true;
+			break;
+		case "Space":
+			projectiles.push(
+				new Projectile({
+					position: {
+						x: player.position.x + Math.cos(player.rotation) * 30,
+						y: player.position.y + Math.sin(player.rotation) * 30,
+					},
+					velocity: {
+						x: Math.cos(player.rotation) * PROJECTILE_SPEED,
+						y: Math.sin(player.rotation) * PROJECTILE_SPEED,
+					},
+				})
+			);
+			console.log(projectiles);
 			break;
 	}
 });
